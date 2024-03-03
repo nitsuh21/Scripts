@@ -38,8 +38,8 @@ def main():
     file_exists = os.path.exists('companies_data.csv')
 
     # Open file in append mode with newline=''
-    with open('exporters_companies_data.csv', 'a', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['name', 'phone_type', 'phone_number']
+    with open('importers_companies_data.csv', 'a', newline='', encoding='utf-8') as csvfile:
+        fieldnames = ['name', 'phone_type', 'phone_number' , 'website']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         existing_phone_numbers = set()
 
@@ -47,7 +47,7 @@ def main():
         if not file_exists:
             writer.writeheader()
 
-        url = f"{base_url}/directory/1/"
+        url = f"{base_url}/directory/2/"
         r = requests.get(url)
         soup = BeautifulSoup(r.content, 'html.parser')
         content = soup.find('ul', class_="pad10")

@@ -66,6 +66,7 @@ def main():
                     if phone_number:  
                         link = phone_number.a['href']
                         phone_details = get_full_detail(link, name, existing_phone_numbers)
+                        print(phone_details)
                         for phone in phone_details:
                             writer.writerow({'name': name, 'phone_type': phone['phone_type'], 'phone_number': phone['phone_number']})
             
