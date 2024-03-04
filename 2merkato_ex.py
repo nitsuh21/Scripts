@@ -39,7 +39,7 @@ def main():
 
     # Open file in append mode with newline=''
     with open('exporters_companies_data.csv', 'a', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['name', 'phone_type', 'phone_number']
+        fieldnames = ['name', 'phone_type', 'phone_number','website']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         existing_phone_numbers = set()
 
@@ -66,14 +66,20 @@ def main():
                     
                     for company in companies:
                         header = company.find('h4')
+                        website_link = company.find('a', class_="pull-right")
+                        if website_link:
+                            website = website_link.get('href')
+                        else:
+                            website = ''
+                        print(website)
                         if header is not None:
                             name = header.text.strip().replace('\n', '')
                             link = header.a['href']
                             phone_details = get_full_detail(link, name, existing_phone_numbers)
                             for phone in phone_details:
                                 try:
-                                    print(f"Writing to file: {name} - {phone['phone_number']}")
-                                    writer.writerow({'name': name, 'phone_type': phone['phone_type'], 'phone_number': phone['phone_number']})
+                                    print(f"Writing to file: {name} - {phone['phone_number']} - {website}")
+                                    writer.writerow({'name': name, 'phone_type': phone['phone_type'], 'phone_number': phone['phone_number'], 'website':website})
                                     csvfile.flush()
                                 except Exception as e:
                                     print(f"Error writing to file: {e}")

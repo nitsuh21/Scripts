@@ -66,6 +66,11 @@ def main():
                     
                     for company in companies:
                         header = company.find('h4')
+                        website_link = company.find('a', class_="pull-right")
+                        if website_link:
+                            website = website_link.get('href')
+                        else:
+                            website = ''
                         if header is not None:
                             name = header.text.strip().replace('\n', '')
                             link = header.a['href']
@@ -73,7 +78,7 @@ def main():
                             for phone in phone_details:
                                 try:
                                     print(f"Writing to file: {name} - {phone['phone_number']}")
-                                    writer.writerow({'name': name, 'phone_type': phone['phone_type'], 'phone_number': phone['phone_number']})
+                                    writer.writerow({'name': name, 'phone_type': phone['phone_type'], 'phone_number': phone['phone_number'],'website':website})
                                     csvfile.flush()
                                 except Exception as e:
                                     print(f"Error writing to file: {e}")
