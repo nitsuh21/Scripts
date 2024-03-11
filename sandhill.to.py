@@ -1,4 +1,5 @@
 import csv
+import time
 import requests
 from bs4 import BeautifulSoup
 import os
@@ -22,6 +23,7 @@ def main():
         for i in range(1, 28):
             page = i
             url = f"{base_url}/?page={page}"
+            time.sleep(2)  
             r = requests.get(url)
             soup = BeautifulSoup(r.content, 'html.parser')
             content = soup.find('h5', class_="inter")
@@ -29,7 +31,7 @@ def main():
 
             try:
                 for name in atags:
-                    link = name.get('href')
+                    link = 'https://sandhill.io' + name.get('href')
                     name = name.text.strip().replace('\n', '')
                     print(f"Writing to file: {name} - {link}")
                     writer.writerow({'name': name, 'link': link})
