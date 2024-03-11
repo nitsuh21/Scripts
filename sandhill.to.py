@@ -25,6 +25,20 @@ def main():
             r = requests.get(url)
             soup = BeautifulSoup(r.content, 'html.parser')
             content = soup.find('h5', class_="inter")
-            print(content)
+            atags = content.find_all('a')
+
+            try:
+                for name in atags:
+                    link = name.get('href')
+                    name = name.text.strip().replace('\n', '')
+                    print(f"Writing to file: {name} - {link}")
+                    writer.writerow({'name': name, 'link': link})
+                    csvfile.flush()
+            except Exception as e:
+                print(f"Error writing to file: {e}")
+                print("=====================================")
+                print(f"Name: {name}")
+                print(f"Link: {link}")
+
 if __name__ == "__main__":
     main()
